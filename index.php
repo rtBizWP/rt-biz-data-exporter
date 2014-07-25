@@ -44,8 +44,8 @@ function rt_biz_export_init() {
 
 	rt_biz_export_include();
 
-	global $rt_biz;
-	$rt_biz = new Rt_Biz_Export();
+	global $rt_biz_export;
+	$rt_biz_export = new Rt_Biz_Export();
 }
 
 add_action( 'rt_biz_init', 'rt_biz_export_init', 1 );
