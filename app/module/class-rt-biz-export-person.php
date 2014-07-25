@@ -22,7 +22,20 @@ if ( ! class_exists( 'Rt_Biz_Export_Person' ) ) {
 	class Rt_Biz_Export_Person extends Rt_Biz_Export_Entity {
 
 		public function __construct() {
+			$this->post_type = rt_biz_get_person_post_type();
+			$rt_biz_attributes_model = new RT_Attributes_Model();
+			$rt_biz_attributes_relationship_model = new RT_Attributes_Relationship_Model();
+			$relations = $rt_biz_attributes_relationship_model->get_relations_by_post_type( $this->post_type );
+			$attributes = array();
+			foreach ( $relations as $r ) {
+				$attr = $rt_biz_attributes_model->get_attribute( $r->attr_id );
+				if ( $attr->attribute_store_as == 'taxonomy' ) {
+					$attributes[] = $attr;
+				}
+			}
+			$this->attributes = $attributes;
 
+			parent::__construct();
 		}
 
 	}
