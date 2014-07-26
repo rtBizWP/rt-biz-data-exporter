@@ -67,7 +67,7 @@ if ( ! class_exists( 'Rt_Biz_Export_Entity' ) ) {
 			$this->export_data = $this->get_export_data( $rows, $columns );
 		}
 
-		function get_records() {
+		function build_query_args() {
 			$args = array(
 				'post_type' => $this->post_type,
 				'post_status' => 'any',
@@ -78,7 +78,7 @@ if ( ! class_exists( 'Rt_Biz_Export_Entity' ) ) {
 			$order = 'DESC';
 //			}
 //			if ( ! $orderby = rt_biz_filter_input( INPUT_GET, 'orderby' ) ) {
-			$orderby = '';
+//			$orderby = '';
 //			}
 			$args[ 'order' ] = $order;
 
@@ -87,6 +87,13 @@ if ( ! class_exists( 'Rt_Biz_Export_Entity' ) ) {
 			if ( ! isset( $args[ 'posts_per_page' ] ) ) {
 				$args[ 'posts_per_page' ] = $this->list_table->get_items_per_page( 'edit_' . $this->post_type . '_per_page', 20 );
 			}
+
+			return $args;
+		}
+
+		function get_records() {
+
+			$args = $this->build_query_args();
 
 			$query = new WP_Query( $args );
 

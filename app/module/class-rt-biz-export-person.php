@@ -39,6 +39,23 @@ if ( ! class_exists( 'Rt_Biz_Export_Person' ) ) {
 			parent::__construct();
 		}
 
+		function build_query_args() {
+			$args = parent::build_query_args();
+
+			if ( isset( $_POST[ 'rt_biz_export_person_attr' ] ) ) {
+				foreach ( $_POST['rt_biz_export_person_attr'] as $tax => $term ) {
+					if ( ! empty( $term ) ) {
+						$args['tax_query'][] = array(
+							'taxonomy' => $tax,
+							'terms' => $term,
+						);
+					}
+				}
+			}
+
+			return $args;
+		}
+
 	}
 
 }
