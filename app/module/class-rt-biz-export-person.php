@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Don't load this file directly!
  */

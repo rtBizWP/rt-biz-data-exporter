@@ -29,7 +29,18 @@ if ( ! class_exists( 'Rt_Biz_Export_Entity' ) ) {
 		public $list_table;
 
 		public function __construct() {
+			add_filter( "manage_{$this->post_type}_posts_columns", array( $this, 'entity_column_filter' ) );
 			$this->load_data();
+		}
+
+		function entity_column_filter( $columns ) {
+			if ( isset( $_POST[ 'rt_biz_export_person_meta' ] ) ) {
+				foreach ( $_POST[ 'rt_biz_export_person_meta' ] as $meta ) {
+					$columns[ $meta ] = $meta;
+				}
+			}
+
+			return $columns;
 		}
 
 		public function load_data() {
@@ -130,6 +141,17 @@ if ( ! class_exists( 'Rt_Biz_Export_Entity' ) ) {
 							}
 							$flag = true;
 							break;
+						}
+					}
+
+					if ( ! $flag && isset( $_POST[ 'rt_biz_export_person_meta' ] ) ) {
+						foreach ( $_POST[ 'rt_biz_export_person_meta' ] as $meta ) {
+							if ( $column_name == $meta ) {
+								$values = rt_biz_get_entity_meta( $item->ID, $meta );
+								$out = implode( ' , ', $values );
+								$flag = true;
+								break;
+							}
 						}
 					}
 
